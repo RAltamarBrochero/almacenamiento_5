@@ -1,0 +1,5 @@
+[app]
+app = "REPLACE_WITH_YOUR_FLY_APP_NAME"
+
+[build]
+  image = "ghcr.io/REPLACE_OWNER/telegram-drive:latest"
