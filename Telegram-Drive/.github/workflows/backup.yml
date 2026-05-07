@@ -1,0 +1,33 @@
+name: Scheduled Backup
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # daily at 02:00 UTC
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python for awscli
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install awscli
+        run: pip install awscli
+      - name: Run backup script
+        env:
+          APP_DATA_DIR: ${{ secrets.APP_DATA_DIR }}
+          BACKUPS_DIR: ./backups
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          BACKUP_S3_BUCKET: ${{ secrets.BACKUP_S3_BUCKET }}
+        run: |
+          mkdir -p backups
+          ./scripts/backup.sh
+      - name: Upload backup as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: telegram-drive-backup
+          path: backups/
