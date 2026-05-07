@@ -13,6 +13,13 @@ target/
 certs/
 backups/
 /.idea/
+# App-specific caches
+app/.npm-cache/
+app/node_modules/
+app/.parcel-cache/
+app/.cache/
+app/dist/
+app/build/
 # Node
 node_modules/
 dist/
